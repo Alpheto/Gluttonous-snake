@@ -1,0 +1,3 @@
+C:/Users/32181/Desktop/2.1/cssx/Gluttonous-snake/cmake-build-debug/CMakeFiles/Gluttonous_snake.dir
+C:/Users/32181/Desktop/2.1/cssx/Gluttonous-snake/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/32181/Desktop/2.1/cssx/Gluttonous-snake/cmake-build-debug/CMakeFiles/rebuild_cache.dir
