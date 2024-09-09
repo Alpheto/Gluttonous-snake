@@ -6,9 +6,5 @@
 #define GLUTTONOUS_SNAKE_MAIN_H
 
 
-class main {
-
-};
-
 
 #endif //GLUTTONOUS_SNAKE_MAIN_H

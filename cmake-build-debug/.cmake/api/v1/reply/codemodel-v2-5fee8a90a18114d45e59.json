@@ -9,7 +9,7 @@
 					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.26"
+						"string" : "3.20"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -27,7 +27,7 @@
 					[
 						0
 					],
-					"name" : "Gluttonous_snake",
+					"name" : "Snake",
 					"targetIndexes" : 
 					[
 						0
@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "Gluttonous_snake::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Gluttonous_snake-Debug-c5957eea5239b8e7813b.json",
-					"name" : "Gluttonous_snake",
+					"id" : "Snake::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Snake-Debug-99aa6e9e0ef6e558bd47.json",
+					"name" : "Snake",
 					"projectIndex" : 0
 				}
 			]
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/clion-codes/Gluttonous-snake/cmake-build-debug",
-		"source" : "D:/clion-codes/Gluttonous-snake"
+		"build" : "C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug",
+		"source" : "C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 4
 	}
 }

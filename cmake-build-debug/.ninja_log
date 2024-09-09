@@ -1,3 +1,4 @@
 # ninja log v5
-0	257	7475580977206205	CMakeFiles/Gluttonous_snake.dir/main.cpp.obj	5d45c8d4c7647f12
 258	372	7475580978327811	Gluttonous_snake.exe	26dfedecc7c61090
+0	842	7475922360289805	CMakeFiles/Snake.dir/main.cpp.obj	188d1b5674b1f987
+870	1057	7475922362409055	Snake.exe	f7e1477e7fbeb46d
