@@ -2,5 +2,5 @@
 using namespace std;
 int main()
 {
-  cout<<"我"<<endl;
+    cout<<"开始游戏"<<endl;
 }
