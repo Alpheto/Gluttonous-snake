@@ -1,14 +1,16 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>  // 新增 SDL2_image 用于加载图片
 #include <iostream>
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-#undef main//这样就可以解决undefwinmain的问题
+#undef main  // 解决 undefwinmain 的问题
+
 // 游戏设置
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const int CELL_SIZE = 20;
-
+const int CELL_SIZE = 40;
+const int SPEED = 5;  // 新增速度变量，表示每次移动多少像素
 // 枚举方向
 enum Direction { UP, DOWN, LEFT, RIGHT };
 
@@ -30,9 +32,12 @@ private:
     void render();
     void generateFood();
     bool checkCollision();
+    SDL_Texture* loadTexture(const std::string& path);
 
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Texture* foodTexture;  // 食物纹理
+    SDL_Texture* bodyTexture;  // 蛇身体纹理
     bool running;
     Direction dir;
     std::vector<Position> snake;
@@ -40,8 +45,20 @@ private:
     bool growSnake;
 };
 
+// 加载图片的函数
+SDL_Texture* SnakeGame::loadTexture(const std::string& path) {
+    SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+    if (loadedSurface == nullptr) {
+        std::cerr << "Unable to load image " << path << "! SDL_image Error: " << IMG_GetError() << std::endl;
+        return nullptr;
+    }
+    SDL_Texture* newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    SDL_FreeSurface(loadedSurface);
+    return newTexture;
+}
+
 SnakeGame::SnakeGame()
-        : window(nullptr), renderer(nullptr), running(true), dir(RIGHT), growSnake(false) {
+        : window(nullptr), renderer(nullptr), foodTexture(nullptr), bodyTexture(nullptr), running(true), dir(RIGHT), growSnake(false) {
     // 初始化 SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
@@ -65,6 +82,21 @@ SnakeGame::SnakeGame()
         return;
     }
 
+    // 初始化 SDL_image
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        std::cerr << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+        running = false;
+        return;
+    }
+
+    // 加载食物和蛇身体图片
+    foodTexture = loadTexture("C:\\Users\\ds555\\Desktop\\ProgramDesigning\\ProjectTeam\\Gluttonous-snake\\picture\\SpanishSeafoodNoddles.png");
+    bodyTexture = loadTexture("C:\\Users\\ds555\\Desktop\\ProgramDesigning\\ProjectTeam\\Gluttonous-snake\\picture\\body1.png");
+    if (!foodTexture || !bodyTexture) {
+        running = false;
+        return;
+    }
+
     // 初始化随机数种子
     srand(static_cast<unsigned int>(time(0)));
 
@@ -78,13 +110,16 @@ SnakeGame::SnakeGame()
 }
 
 SnakeGame::~SnakeGame() {
+    SDL_DestroyTexture(foodTexture);
+    SDL_DestroyTexture(bodyTexture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    IMG_Quit();
     SDL_Quit();
 }
 
 void SnakeGame::run() {
-    const int FPS = 10;
+    const int FPS = 5;
     const int frameDelay = 1000 / FPS;
     Uint32 frameStart;
     int frameTime;
@@ -165,16 +200,14 @@ void SnakeGame::render() {
     SDL_RenderClear(renderer);
 
     // 绘制蛇
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     for (const auto& segment : snake) {
         SDL_Rect rect = {segment.x, segment.y, CELL_SIZE, CELL_SIZE};
-        SDL_RenderFillRect(renderer, &rect);
+        SDL_RenderCopy(renderer, bodyTexture, nullptr, &rect);  // 使用蛇身体图片
     }
 
     // 绘制食物
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_Rect foodRect = {food.x, food.y, CELL_SIZE, CELL_SIZE};
-    SDL_RenderFillRect(renderer, &foodRect);
+    SDL_RenderCopy(renderer, foodTexture, nullptr, &foodRect);  // 使用食物图片
 
     // 显示更新
     SDL_RenderPresent(renderer);
@@ -208,5 +241,3 @@ int main(int argc, char* argv[]) {
     game.run();
     return 0;
 }
-
-
