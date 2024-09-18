@@ -1,14 +1,9 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.20)
 project(Gluttonous_snake)
 
 set(CMAKE_CXX_STANDARD 14)
 
-<<<<<<< Updated upstream
-include_directories(.)
 
-add_executable(Gluttonous_snake
-        main.cpp)
-=======
 # 设置SDL2和SDL2_image的头文件路径
 set(SDL_INCLUDE_DIR "D:/SDLpaint/SDL2/mingw(CLion+VSC)/SDL2-2.26.0-allinone/x86_64-w64-mingw32/include")
 include_directories(${SDL_INCLUDE_DIR})
@@ -29,4 +24,3 @@ target_link_libraries(Snake PRIVATE
 
 # 设置编译时的链接标志（如果需要控制台输出）
 set_target_properties(Snake PROPERTIES LINK_FLAGS "-mconsole")
->>>>>>> Stashed changes

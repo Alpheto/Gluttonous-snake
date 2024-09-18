@@ -8,89 +8,89 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="D:/clion-codes/Gluttonous-snake/cmake-build-debug"/>
+				<Option working_dir="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="Gluttonous_snake">
-				<Option output="D:/clion-codes/Gluttonous-snake/cmake-build-debug/Gluttonous_snake.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/clion-codes/Gluttonous-snake/cmake-build-debug"/>
+			<Target title="Snake">
+				<Option output="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Snake.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="D:/clion-codes/Gluttonous-snake/."/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="D:\SDLpaint\SDL2\mingw(CLion+VSC)\SDL2-2.26.0-allinone\x86_64-w64-mingw32\include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 Gluttonous_snake"/>
-					<CompileFile command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 Snake"/>
+					<CompileFile command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="Gluttonous_snake/fast">
-				<Option output="D:/clion-codes/Gluttonous-snake/cmake-build-debug/Gluttonous_snake.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="D:/clion-codes/Gluttonous-snake/cmake-build-debug"/>
+			<Target title="Snake/fast">
+				<Option output="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Snake.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="D:/clion-codes/Gluttonous-snake/."/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"/>
-					<Add directory="D:/CLion 2024.1.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed"/>
+					<Add directory="C:/CLion 2022.3/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="D:\SDLpaint\SDL2\mingw(CLion+VSC)\SDL2-2.26.0-allinone\x86_64-w64-mingw32\include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 Gluttonous_snake/fast"/>
-					<CompileFile command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 Snake/fast"/>
+					<CompileFile command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="D:/clion-codes/Gluttonous-snake/cmake-build-debug"/>
+				<Option working_dir="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="D:/clion-codes/Gluttonous-snake/cmake-build-debug"/>
+				<Option working_dir="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="D:/CLion 2024.1.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/clion-codes/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/CLION2~1.3/bin/mingw/bin/mingw32-make.exe -f &quot;C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="D:/clion-codes/Gluttonous-snake/main.cpp">
-			<Option target="Gluttonous_snake"/>
+		<Unit filename="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/main.cpp">
+			<Option target="Snake"/>
 		</Unit>
-		<Unit filename="D:/clion-codes/Gluttonous-snake/main.h">
-			<Option target="Gluttonous_snake"/>
+		<Unit filename="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/main.h">
+			<Option target="Snake"/>
 		</Unit>
-		<Unit filename="D:/clion-codes/Gluttonous-snake/CMakeLists.txt">
+		<Unit filename="C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

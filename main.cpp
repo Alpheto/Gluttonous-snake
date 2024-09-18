@@ -1,18 +1,10 @@
-<<<<<<< Updated upstream
-#include <iostream>
-using namespace std;
-int main()
-{
-    cout<<"开始游戏"<<endl;
-}
-=======
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-#undef main//这样就可以解决undefwinmain的问题
+#undef main // 这样就可以解决 undefwinmain 的问题
 // 游戏设置
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -21,8 +13,8 @@ const int CELL_SIZE = 20;
 // 枚举方向
 enum Direction { UP, DOWN, LEFT, RIGHT };
 
-//枚举游戏的状态
-enum GameState {MENU, PLAYING, SETTING};
+// 枚举游戏的状态
+enum GameState { MENU, PLAYING, SETTING };
 
 // 位置结构体
 struct Position {
@@ -57,6 +49,10 @@ private:
     SDL_Texture* startButtonTexture;
     SDL_Texture* menuButtonTexture;
 
+    SDL_Texture* snakeHeadTexture;
+    SDL_Texture* snakeBodyTexture;
+    SDL_Texture* snakeTailTexture;
+
     void processInput();
     void update();
     void render();
@@ -77,8 +73,9 @@ private:
 };
 
 SnakeGame::SnakeGame()
-        : window(nullptr), renderer(nullptr), running(true), gameState(MENU),dir(RIGHT), growSnake(false),
-        backgroundTexture(nullptr), startButtonTexture(nullptr), menuButtonTexture(nullptr) {
+        : window(nullptr), renderer(nullptr), running(true), gameState(MENU), dir(RIGHT), growSnake(false),
+          backgroundTexture(nullptr), startButtonTexture(nullptr), menuButtonTexture(nullptr),
+          snakeHeadTexture(nullptr), snakeBodyTexture(nullptr), snakeTailTexture(nullptr) {
     // 初始化 SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
@@ -111,7 +108,12 @@ SnakeGame::SnakeGame()
     startButtonTexture = loadTexture("picture\\startbutton.png", renderer);
     menuButtonTexture = loadTexture("picture\\setting.png", renderer);
 
-    if (backgroundTexture == nullptr || startButtonTexture == nullptr || menuButtonTexture == nullptr) {
+    snakeHeadTexture = loadTexture("picture\\Snakehead.png", renderer);
+    snakeBodyTexture = loadTexture("picture\\Snakebody.png", renderer);
+    snakeTailTexture = loadTexture("picture\\Snaketail.png", renderer);
+
+    if (backgroundTexture == nullptr || startButtonTexture == nullptr || menuButtonTexture == nullptr ||
+        snakeHeadTexture == nullptr || snakeBodyTexture == nullptr || snakeTailTexture == nullptr) {
         running = false;
         return;
     }
@@ -131,6 +133,10 @@ SnakeGame::~SnakeGame() {
     SDL_DestroyTexture(backgroundTexture);
     SDL_DestroyTexture(startButtonTexture);
     SDL_DestroyTexture(menuButtonTexture);
+
+    SDL_DestroyTexture(snakeHeadTexture);
+    SDL_DestroyTexture(snakeBodyTexture);
+    SDL_DestroyTexture(snakeTailTexture);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -164,16 +170,15 @@ void SnakeGame::processInput() {
     while (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
             running = false;
-        } else if(event.type == SDL_MOUSEBUTTONDOWN && gameState == MENU)
-        {
+        } else if (event.type == SDL_MOUSEBUTTONDOWN && gameState == MENU) {
             int x, y;
             SDL_GetMouseState(&x, &y);
 
-            if(isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 300, 100, 50)) {
+            if (isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 300, 100, 50)) {
                 gameState = PLAYING;
             }
 
-            if (isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 400, 100, 50)){
+            if (isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 400, 100, 50)) {
                 gameState = SETTING;
             }
         } else if (event.type == SDL_KEYDOWN && gameState == PLAYING) {
@@ -196,7 +201,7 @@ void SnakeGame::processInput() {
 }
 
 void SnakeGame::update() {
-    if (gameState == PLAYING){
+    if (gameState == PLAYING) {
         // 移动蛇
         Position newHead = snake[0];
         switch (dir) {
@@ -256,18 +261,66 @@ void SnakeGame::renderMenu() {
     SDL_RenderPresent(renderer);
 }
 
-
-
 void SnakeGame::renderGame() {
     // 清屏
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     // 绘制蛇
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    for (const auto& segment : snake) {
-        SDL_Rect rect = {segment.x, segment.y, CELL_SIZE, CELL_SIZE};
-        SDL_RenderFillRect(renderer, &rect);
+    for (size_t i = 0; i < snake.size(); ++i) {
+        SDL_Rect rect = {snake[i].x, snake[i].y, CELL_SIZE, CELL_SIZE};
+        SDL_Texture* texture = nullptr;
+        double angle = 0.0;
+
+        if (i == 0) {
+            // 蛇头
+            texture = snakeHeadTexture;
+            // 根据方向设置角度
+            switch (dir) {
+                case UP: angle = 90.0; break;
+                case DOWN: angle = 270.0; break;
+                case LEFT: angle = 0.0; break;
+                case RIGHT: angle = 180.0; break;
+            }
+        }else if (i == snake.size() - 1) {
+            // 蛇尾
+            texture = snakeTailTexture;
+            if (snake.size() > 1) {
+                // 当前段
+                const Position& currentSegment = snake[i];
+                // 前一个段
+                const Position& prevSegment = snake[i + 1];
+
+                // 计算前一个段与当前段之间的方向
+                if (prevSegment.x == currentSegment.x) {
+                    // 垂直
+                    if (prevSegment.y < currentSegment.y) {
+                        // 向下
+                        angle = 90.0;
+                    } else {
+                        // 向上
+                        angle = 270.0;
+                    }
+                } else {
+                    // 水平
+                    if (prevSegment.x < currentSegment.x) {
+                        // 向右
+                        angle = 0.0;
+                    } else {
+                        // 向左
+                        angle = 180.0;
+                    }
+                }
+            }
+        } else {
+            // 蛇身
+            texture = snakeBodyTexture;
+            // 这里你可以设置蛇身的角度（如果需要）
+        }
+
+        if (texture != nullptr) {
+            SDL_RenderCopyEx(renderer, texture, nullptr, &rect, angle, nullptr, SDL_FLIP_NONE);
+        }
     }
 
     // 绘制食物
@@ -278,6 +331,13 @@ void SnakeGame::renderGame() {
     // 显示更新
     SDL_RenderPresent(renderer);
 }
+
+
+
+
+
+
+
 
 void SnakeGame::generateFood() {
     food.x = (rand() % (SCREEN_WIDTH / CELL_SIZE)) * CELL_SIZE;
@@ -311,6 +371,3 @@ int main(int argc, char* argv[]) {
     game.run();
     return 0;
 }
-
-
->>>>>>> Stashed changes
