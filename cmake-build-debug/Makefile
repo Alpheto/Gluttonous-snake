@@ -116,24 +116,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Gluttonous_snake
+# Target rules for targets named Snake
 
 # Build rule for target.
-Gluttonous_snake: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Gluttonous_snake
-.PHONY : Gluttonous_snake
+Snake: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Snake
+.PHONY : Snake
 
 # fast build rule for target.
-Gluttonous_snake/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Gluttonous_snake.dir\build.make CMakeFiles/Gluttonous_snake.dir/build
-.PHONY : Gluttonous_snake/fast
+Snake/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Snake.dir\build.make CMakeFiles/Snake.dir/build
+.PHONY : Snake/fast
 
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
 # target to build an object file
 main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Gluttonous_snake.dir\build.make CMakeFiles/Gluttonous_snake.dir/main.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Snake.dir\build.make CMakeFiles/Snake.dir/main.cpp.obj
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -141,7 +141,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Gluttonous_snake.dir\build.make CMakeFiles/Gluttonous_snake.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Snake.dir\build.make CMakeFiles/Snake.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -149,7 +149,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Gluttonous_snake.dir\build.make CMakeFiles/Gluttonous_snake.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Snake.dir\build.make CMakeFiles/Snake.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -160,7 +160,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... Gluttonous_snake
+	@echo ... Snake
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
