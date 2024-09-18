@@ -62,7 +62,11 @@ CMAKE_BINARY_DIR = D:\clion-codes\Gluttonous-snake\cmake-build-debug
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+<<<<<<< Updated upstream
 all: CMakeFiles/Gluttonous_snake.dir/all
+=======
+all: CMakeFiles/Snake.dir/all
+>>>>>>> Stashed changes
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -70,6 +74,7 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+<<<<<<< Updated upstream
 clean: CMakeFiles/Gluttonous_snake.dir/clean
 .PHONY : clean
 
@@ -98,6 +103,36 @@ Gluttonous_snake: CMakeFiles/Gluttonous_snake.dir/rule
 CMakeFiles/Gluttonous_snake.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Gluttonous_snake.dir\build.make CMakeFiles/Gluttonous_snake.dir/clean
 .PHONY : CMakeFiles/Gluttonous_snake.dir/clean
+=======
+clean: CMakeFiles/Snake.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/Snake.dir
+
+# All Build rule for target.
+CMakeFiles/Snake.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Snake.dir\build.make CMakeFiles/Snake.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Snake.dir\build.make CMakeFiles/Snake.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\clion-codes\Gluttonous-snake\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target Snake"
+.PHONY : CMakeFiles/Snake.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Snake.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\clion-codes\Gluttonous-snake\cmake-build-debug\CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Snake.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\clion-codes\Gluttonous-snake\cmake-build-debug\CMakeFiles 0
+.PHONY : CMakeFiles/Snake.dir/rule
+
+# Convenience name for target.
+Snake: CMakeFiles/Snake.dir/rule
+.PHONY : Snake
+
+# clean rule for target.
+CMakeFiles/Snake.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Snake.dir\build.make CMakeFiles/Snake.dir/clean
+.PHONY : CMakeFiles/Snake.dir/clean
+>>>>>>> Stashed changes
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -1,0 +1,177 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "Gluttonous_snake.exe"
+		},
+		{
+			"path" : "Gluttonous_snake.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+<<<<<<<< Updated upstream:cmake-build-debug/.cmake/api/v1/reply/target-Gluttonous_snake-Debug-aa4b0560ad069b872a6b.json
+========
+			"link_directories",
+			"target_link_libraries",
+>>>>>>>> Stashed changes:cmake-build-debug/.cmake/api/v1/reply/target-Snake-Debug-6df99923b106caf5783c.json
+			"include_directories"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+<<<<<<<< Updated upstream:cmake-build-debug/.cmake/api/v1/reply/target-Gluttonous_snake-Debug-aa4b0560ad069b872a6b.json
+				"line" : 8,
+========
+				"line" : 15,
+>>>>>>>> Stashed changes:cmake-build-debug/.cmake/api/v1/reply/target-Snake-Debug-6df99923b106caf5783c.json
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+<<<<<<<< Updated upstream:cmake-build-debug/.cmake/api/v1/reply/target-Gluttonous_snake-Debug-aa4b0560ad069b872a6b.json
+				"line" : 6,
+========
+				"line" : 12,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 18,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 8,
+>>>>>>>> Stashed changes:cmake-build-debug/.cmake/api/v1/reply/target-Snake-Debug-6df99923b106caf5783c.json
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+<<<<<<<< Updated upstream:cmake-build-debug/.cmake/api/v1/reply/target-Gluttonous_snake-Debug-aa4b0560ad069b872a6b.json
+					"fragment" : "-g -std=gnu++14 -fdiagnostics-color=always"
+========
+					"fragment" : "-g -std=gnu++11 -fdiagnostics-color=always"
+>>>>>>>> Stashed changes:cmake-build-debug/.cmake/api/v1/reply/target-Snake-Debug-6df99923b106caf5783c.json
+				}
+			],
+			"includes" : 
+			[
+				{
+<<<<<<<< Updated upstream:cmake-build-debug/.cmake/api/v1/reply/target-Gluttonous_snake-Debug-aa4b0560ad069b872a6b.json
+					"backtrace" : 2,
+					"path" : "D:/clion-codes/Gluttonous-snake/."
+========
+					"backtrace" : 4,
+					"path" : "D:/SDLpaint/SDL2/mingw(CLion+VSC)/SDL2-2.26.0-allinone/x86_64-w64-mingw32/include"
+>>>>>>>> Stashed changes:cmake-build-debug/.cmake/api/v1/reply/target-Snake-Debug-6df99923b106caf5783c.json
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"id" : "Gluttonous_snake::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+<<<<<<<< Updated upstream:cmake-build-debug/.cmake/api/v1/reply/target-Gluttonous_snake-Debug-aa4b0560ad069b872a6b.json
+========
+				"backtrace" : 2,
+				"fragment" : "-LD:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib",
+				"role" : "libraryPath"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "D:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib\\libSDL2main.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "D:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib\\libSDL2.dll.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "D:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib\\libSDL2_image.dll.a",
+				"role" : "libraries"
+			},
+			{
+>>>>>>>> Stashed changes:cmake-build-debug/.cmake/api/v1/reply/target-Snake-Debug-6df99923b106caf5783c.json
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "Gluttonous_snake",
+	"nameOnDisk" : "Gluttonous_snake.exe",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "main.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

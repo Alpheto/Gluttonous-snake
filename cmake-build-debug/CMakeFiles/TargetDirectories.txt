@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
 D:/clion-codes/Gluttonous-snake/cmake-build-debug/CMakeFiles/Gluttonous_snake.dir
+=======
+D:/clion-codes/Gluttonous-snake/cmake-build-debug/CMakeFiles/Snake.dir
+>>>>>>> Stashed changes
 D:/clion-codes/Gluttonous-snake/cmake-build-debug/CMakeFiles/edit_cache.dir
 D:/clion-codes/Gluttonous-snake/cmake-build-debug/CMakeFiles/rebuild_cache.dir
