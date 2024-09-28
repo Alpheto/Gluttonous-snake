@@ -1,5 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -14,7 +16,7 @@ const int CELL_SIZE = 20;
 enum Direction { UP, DOWN, LEFT, RIGHT };
 
 // 枚举游戏的状态
-enum GameState { MENU, PLAYING, SETTING };
+enum GameState { MENU, PLAYING, SETTING, GAME_OVER };
 
 // 位置结构体
 struct Position {
@@ -37,6 +39,18 @@ SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer) {
     return newTexture;
 }
 
+// 文本渲染函数
+SDL_Texture* drawText(const std::string& text, TTF_Font* font, SDL_Color color, SDL_Renderer* renderer) {
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+    if (textSurface == nullptr) {
+        std::cerr << "Failed to render text! SDL_ttf Error: " << TTF_GetError() << std::endl;
+        return nullptr;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FreeSurface(textSurface);
+    return texture;
+}
+
 // 游戏类
 class SnakeGame {
 public:
@@ -45,19 +59,30 @@ public:
     void run();
 
 private:
-    SDL_Texture* backgroundTexture;
+    SDL_Texture* menu_backgroundTexture;
+    SDL_Texture* game_backgroundTexture;
     SDL_Texture* startButtonTexture;
     SDL_Texture* menuButtonTexture;
-
+    SDL_Texture* additionTexture;
+    SDL_Texture* subtractionTexture;
+    SDL_Texture* backTexture;
+    SDL_Texture* setting_backgroundTexture;
     SDL_Texture* snakeHeadTexture;
     SDL_Texture* snakeBodyTexture;
     SDL_Texture* snakeTailTexture;
+    SDL_Texture* foodTexture;
+
+    Mix_Music* bgm;
+    TTF_Font* font; // 字体
 
     void processInput();
     void update();
+    void resetGame();
     void render();
     void renderMenu();
     void renderGame();
+    void renderSetting();
+    void renderGameOver();
     void generateFood();
     bool checkCollision();
     bool isButtonClicked(int x, int y, int btnx, int btny, int btnw, int btnh);
@@ -69,13 +94,16 @@ private:
     Direction dir;
     std::vector<Position> snake;
     Position food;
+    Uint32 gameOverStartTime;
     bool growSnake;
 };
 
 SnakeGame::SnakeGame()
         : window(nullptr), renderer(nullptr), running(true), gameState(MENU), dir(RIGHT), growSnake(false),
-          backgroundTexture(nullptr), startButtonTexture(nullptr), menuButtonTexture(nullptr),
-          snakeHeadTexture(nullptr), snakeBodyTexture(nullptr), snakeTailTexture(nullptr) {
+        menu_backgroundTexture(nullptr), startButtonTexture(nullptr), menuButtonTexture(nullptr),
+        snakeHeadTexture(nullptr), snakeBodyTexture(nullptr), snakeTailTexture(nullptr), foodTexture(nullptr),
+        bgm(nullptr), additionTexture(nullptr), subtractionTexture(nullptr), backTexture(nullptr), setting_backgroundTexture(nullptr),
+        game_backgroundTexture(nullptr), font(nullptr){
     // 初始化 SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
@@ -85,6 +113,18 @@ SnakeGame::SnakeGame()
     // 初始化 SDL_image
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
         std::cerr << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+        running = false;
+        return;
+    }
+    // 初始化 SDL_mixer
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        running = false;
+        return;
+    }
+    // 初始化 SDL_ttf
+    if (TTF_Init() == -1) {
+        std::cerr << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << std::endl;
         running = false;
         return;
     }
@@ -104,16 +144,37 @@ SnakeGame::SnakeGame()
         return;
     }
     // 加载图片纹理
-    backgroundTexture = loadTexture("picture\\background.png", renderer);
+    menu_backgroundTexture = loadTexture("picture\\Menu_background.png", renderer);
+    game_backgroundTexture = loadTexture("picture\\gamebackground.jpg", renderer);
     startButtonTexture = loadTexture("picture\\startbutton.png", renderer);
     menuButtonTexture = loadTexture("picture\\setting.png", renderer);
-
+    additionTexture = loadTexture("picture\\addition.png", renderer); // 增加音量按钮的图片
+    subtractionTexture = loadTexture("picture\\subtraction.png", renderer); // 减少音量按钮的图片
+    backTexture = loadTexture("picture\\back.png", renderer);
+    setting_backgroundTexture = loadTexture("picture\\settingbackground.jpg", renderer);
+    foodTexture = loadTexture("picture\\food.png", renderer);
     snakeHeadTexture = loadTexture("picture\\Snakehead.png", renderer);
     snakeBodyTexture = loadTexture("picture\\Snakebody.png", renderer);
     snakeTailTexture = loadTexture("picture\\Snaketail.png", renderer);
+    bgm = Mix_LoadMUS("music\\MenuBGM.mp3");
+    if (bgm == nullptr) {
+        std::cerr << "Failed to load BGM! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        running = false;
+        return;
+    }
 
-    if (backgroundTexture == nullptr || startButtonTexture == nullptr || menuButtonTexture == nullptr ||
-        snakeHeadTexture == nullptr || snakeBodyTexture == nullptr || snakeTailTexture == nullptr) {
+    Mix_PlayMusic(bgm, -1);  // 无限循环播放
+
+    // 加载字体
+    font = TTF_OpenFont("font\\English.ttf", 24); // 替换为你的字体文件路径
+    if (font == nullptr) {
+        std::cerr << "Failed to load font! SDL_ttf Error: " << TTF_GetError() << std::endl;
+        running = false;
+        return;
+    }
+
+    if (menu_backgroundTexture == nullptr || startButtonTexture == nullptr || menuButtonTexture == nullptr ||
+        snakeHeadTexture == nullptr || snakeBodyTexture == nullptr || snakeTailTexture == nullptr || foodTexture == nullptr) {
         running = false;
         return;
     }
@@ -130,10 +191,19 @@ SnakeGame::SnakeGame()
 }
 
 SnakeGame::~SnakeGame() {
-    SDL_DestroyTexture(backgroundTexture);
+    Mix_FreeMusic(bgm);
+    Mix_CloseAudio();
+    TTF_CloseFont(font); // 关闭字体
+
+    SDL_DestroyTexture(menu_backgroundTexture);
+    SDL_DestroyTexture(game_backgroundTexture);
+    SDL_DestroyTexture(setting_backgroundTexture);
     SDL_DestroyTexture(startButtonTexture);
     SDL_DestroyTexture(menuButtonTexture);
-
+    SDL_DestroyTexture(additionTexture);
+    SDL_DestroyTexture(subtractionTexture);
+    SDL_DestroyTexture(backTexture);
+    SDL_DestroyTexture(foodTexture);
     SDL_DestroyTexture(snakeHeadTexture);
     SDL_DestroyTexture(snakeBodyTexture);
     SDL_DestroyTexture(snakeTailTexture);
@@ -141,6 +211,7 @@ SnakeGame::~SnakeGame() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 }
 
@@ -175,9 +246,8 @@ void SnakeGame::processInput() {
             SDL_GetMouseState(&x, &y);
 
             if (isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 300, 100, 50)) {
-                gameState = PLAYING;
+                resetGame();
             }
-
             if (isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 400, 100, 50)) {
                 gameState = SETTING;
             }
@@ -195,6 +265,25 @@ void SnakeGame::processInput() {
                 case SDLK_RIGHT:
                     if (dir != LEFT) dir = RIGHT;
                     break;
+            }
+        } else if (event.type == SDL_MOUSEBUTTONDOWN && gameState == SETTING){
+            int x,y;
+            SDL_GetMouseState(&x, &y);
+
+            if(isButtonClicked(x, y, SCREEN_WIDTH / 2 - 150, 300, 80, 50)) {
+                int volume = Mix_VolumeMusic(-1);
+                volume = std::min(128, volume + 28);
+                Mix_VolumeMusic(volume);
+            }
+
+            if (isButtonClicked(x, y, SCREEN_WIDTH / 2 + 50, 300, 80, 50)) {
+                int volume = Mix_VolumeMusic(-1);  // 获取当前音量
+                volume = std::max(0, volume - 28);  // 减少音量
+                Mix_VolumeMusic(volume);
+            }
+
+            if(isButtonClicked(x, y, 0, 0, 50, 50)) {
+                gameState = MENU;
             }
         }
     }
@@ -219,7 +308,8 @@ void SnakeGame::update() {
 
         // 检查碰撞
         if (checkCollision()) {
-            running = false;
+            gameState = GAME_OVER;
+            gameOverStartTime = SDL_GetTicks();
             return;
         }
 
@@ -230,6 +320,10 @@ void SnakeGame::update() {
         } else {
             growSnake = false;
         }
+    } else if(gameState == GAME_OVER) {
+        if(SDL_GetTicks() - gameOverStartTime >= 5000) {
+            gameState = MENU;
+        }
     }
 }
 
@@ -238,6 +332,10 @@ void SnakeGame::render() {
         renderMenu();
     } else if (gameState == PLAYING) {
         renderGame();
+    } else if (gameState == SETTING) {
+        renderSetting();
+    } else if(gameState == GAME_OVER) {
+        renderGameOver();
     }
 }
 
@@ -247,7 +345,7 @@ void SnakeGame::renderMenu() {
     SDL_RenderClear(renderer);
 
     // 渲染背景
-    SDL_RenderCopy(renderer, backgroundTexture, nullptr, nullptr);  // 将整个窗口渲染为背景图片
+    SDL_RenderCopy(renderer, menu_backgroundTexture, nullptr, nullptr);  // 将整个窗口渲染为背景图片
 
     // 渲染“开始游戏”按钮
     SDL_Rect startButtonRect = {SCREEN_WIDTH / 2 - 50, 300, 80, 50};  // 定义按钮的位置和大小
@@ -261,11 +359,35 @@ void SnakeGame::renderMenu() {
     SDL_RenderPresent(renderer);
 }
 
+void SnakeGame:: renderSetting()
+{
+    // 清屏
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    //绘制设置界面
+    SDL_RenderCopy(renderer, setting_backgroundTexture, nullptr, nullptr);//背景
+
+    //声音加减按钮的渲染
+    SDL_Rect voiceButtonAddition = {SCREEN_WIDTH / 2 - 150, 300, 80, 50};
+    SDL_RenderCopy(renderer, additionTexture, nullptr, &voiceButtonAddition);
+    SDL_Rect voiceButtonSubtraction = {SCREEN_WIDTH / 2 +50, 300, 80, 50};
+    SDL_RenderCopy(renderer, subtractionTexture, nullptr, &voiceButtonSubtraction);
+
+    //返回键的操作
+    SDL_Rect backButton = {0, 0, 50, 50};
+    SDL_RenderCopy(renderer, backTexture, nullptr, &backButton);
+    //显示渲染的内容
+    SDL_RenderPresent(renderer);
+
+}
+
 void SnakeGame::renderGame() {
     // 清屏
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
+    SDL_RenderCopy(renderer, game_backgroundTexture, nullptr, nullptr);//背景
     // 绘制蛇
     for (size_t i = 0; i < snake.size(); ++i) {
         SDL_Rect rect = {snake[i].x, snake[i].y, CELL_SIZE, CELL_SIZE};
@@ -324,20 +446,43 @@ void SnakeGame::renderGame() {
     }
 
     // 绘制食物
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_Rect foodRect = {food.x, food.y, CELL_SIZE, CELL_SIZE};
-    SDL_RenderFillRect(renderer, &foodRect);
+    SDL_RenderCopy(renderer, foodTexture, nullptr, &foodRect); // 使用纹理绘制食物
 
     // 显示更新
     SDL_RenderPresent(renderer);
 }
 
+// 添加 renderGameOver 方法
+void SnakeGame::renderGameOver() {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
 
+    SDL_Color textColor = {255, 0, 0}; // 红色
+    SDL_Texture* textTexture = drawText("DIE", font, textColor, renderer); // 渲染文本
+    if (textTexture) {
+        SDL_Rect textRect = {SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2 - 25, 100, 50}; // 设置文本位置和大小
+        SDL_RenderCopy(renderer, textTexture, nullptr, &textRect); // 绘制文本
+        SDL_DestroyTexture(textTexture); // 释放纹理
+    }
 
+    SDL_RenderPresent(renderer);
+}
 
+void SnakeGame::resetGame() {
+    // 清空蛇的身体
+    snake.clear();
+    // 重置蛇的位置
+    snake.push_back({SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2});
+    snake.push_back({SCREEN_WIDTH / 2 - CELL_SIZE, SCREEN_HEIGHT / 2});
+    snake.push_back({SCREEN_WIDTH / 2 - 2 * CELL_SIZE, SCREEN_HEIGHT / 2});
 
+    // 生成新的食物
+    generateFood();
 
-
+    // 重置游戏状态
+    gameState = PLAYING;
+}
 
 void SnakeGame::generateFood() {
     food.x = (rand() % (SCREEN_WIDTH / CELL_SIZE)) * CELL_SIZE;
