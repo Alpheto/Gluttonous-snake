@@ -2,15 +2,19 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
+
 #include <iostream>
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <algorithm> // std::find
 #undef main // 这样就可以解决 undefwinmain 的问题
 // 游戏设置
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int CELL_SIZE = 20;
+const int BARRIERS_NUM = 10;
+
 
 // 枚举方向
 enum Direction { UP, DOWN, LEFT, RIGHT };
@@ -21,6 +25,11 @@ enum GameState { MENU, PLAYING, SETTING, GAME_OVER };
 // 位置结构体
 struct Position {
     int x, y;
+
+    // 重载运算符以便 std::find 能够比较 Position 对象
+    bool operator==(const Position& other) const {
+        return x == other.x && y == other.y;
+    }
 };
 
 // 加载图片为纹理的函数
@@ -71,6 +80,7 @@ private:
     SDL_Texture* snakeBodyTexture;
     SDL_Texture* snakeTailTexture;
     SDL_Texture* foodTexture;
+    SDL_Texture* barrierTexture;
 
     Mix_Music* bgm;
     TTF_Font* font; // 字体
@@ -84,6 +94,7 @@ private:
     void renderSetting();
     void renderGameOver();
     void generateFood();
+    void generateBarriers();
     bool checkCollision();
     bool isButtonClicked(int x, int y, int btnx, int btny, int btnw, int btnh);
 
@@ -94,6 +105,7 @@ private:
     Direction dir;
     std::vector<Position> snake;
     Position food;
+    std::vector<Position> barriers;
     Uint32 gameOverStartTime;
     bool growSnake;
 };
@@ -101,7 +113,7 @@ private:
 SnakeGame::SnakeGame()
         : window(nullptr), renderer(nullptr), running(true), gameState(MENU), dir(RIGHT), growSnake(false),
         menu_backgroundTexture(nullptr), startButtonTexture(nullptr), menuButtonTexture(nullptr),
-        snakeHeadTexture(nullptr), snakeBodyTexture(nullptr), snakeTailTexture(nullptr), foodTexture(nullptr),
+        snakeHeadTexture(nullptr), snakeBodyTexture(nullptr), snakeTailTexture(nullptr), foodTexture(nullptr),barrierTexture(nullptr),
         bgm(nullptr), additionTexture(nullptr), subtractionTexture(nullptr), backTexture(nullptr), setting_backgroundTexture(nullptr),
         game_backgroundTexture(nullptr), font(nullptr){
     // 初始化 SDL
@@ -153,6 +165,7 @@ SnakeGame::SnakeGame()
     backTexture = loadTexture("picture\\back.png", renderer);
     setting_backgroundTexture = loadTexture("picture\\settingbackground.jpg", renderer);
     foodTexture = loadTexture("picture\\food.png", renderer);
+    barrierTexture = loadTexture("picture\\barrier.png", renderer);
     snakeHeadTexture = loadTexture("picture\\Snakehead.png", renderer);
     snakeBodyTexture = loadTexture("picture\\Snakebody.png", renderer);
     snakeTailTexture = loadTexture("picture\\Snaketail.png", renderer);
@@ -174,7 +187,7 @@ SnakeGame::SnakeGame()
     }
 
     if (menu_backgroundTexture == nullptr || startButtonTexture == nullptr || menuButtonTexture == nullptr ||
-        snakeHeadTexture == nullptr || snakeBodyTexture == nullptr || snakeTailTexture == nullptr || foodTexture == nullptr) {
+        snakeHeadTexture == nullptr || snakeBodyTexture == nullptr || snakeTailTexture == nullptr || foodTexture == nullptr || barrierTexture == nullptr) {
         running = false;
         return;
     }
@@ -188,6 +201,9 @@ SnakeGame::SnakeGame()
 
     // 生成食物
     generateFood();
+
+    // 生成障碍物
+    generateBarriers();
 }
 
 SnakeGame::~SnakeGame() {
@@ -204,6 +220,7 @@ SnakeGame::~SnakeGame() {
     SDL_DestroyTexture(subtractionTexture);
     SDL_DestroyTexture(backTexture);
     SDL_DestroyTexture(foodTexture);
+    SDL_DestroyTexture(barrierTexture);
     SDL_DestroyTexture(snakeHeadTexture);
     SDL_DestroyTexture(snakeBodyTexture);
     SDL_DestroyTexture(snakeTailTexture);
@@ -304,8 +321,10 @@ void SnakeGame::update() {
         if (newHead.x == food.x && newHead.y == food.y) {
             growSnake = true;
             generateFood();
+            generateBarriers();// 障碍物也进行更新
         }
 
+        // 检查是否碰到障碍物以及边界
         // 检查碰撞
         if (checkCollision()) {
             gameState = GAME_OVER;
@@ -449,6 +468,11 @@ void SnakeGame::renderGame() {
     SDL_Rect foodRect = {food.x, food.y, CELL_SIZE, CELL_SIZE};
     SDL_RenderCopy(renderer, foodTexture, nullptr, &foodRect); // 使用纹理绘制食物
 
+    // 绘制障碍物
+    for (const auto& barrier : barriers) {
+        SDL_Rect barrierRect = {barrier.x, barrier.y, CELL_SIZE, CELL_SIZE};
+        SDL_RenderCopy(renderer, barrierTexture, nullptr, &barrierRect); 
+    }
     // 显示更新
     SDL_RenderPresent(renderer);
 }
@@ -480,6 +504,9 @@ void SnakeGame::resetGame() {
     // 生成新的食物
     generateFood();
 
+    // 生成新的障碍物
+    generateBarriers();
+
     // 重置游戏状态
     gameState = PLAYING;
 }
@@ -489,17 +516,50 @@ void SnakeGame::generateFood() {
     food.y = (rand() % (SCREEN_HEIGHT / CELL_SIZE)) * CELL_SIZE;
 }
 
+void SnakeGame::generateBarriers() {
+    barriers.clear();
+    for (int i = 0; i < BARRIERS_NUM; ++i) {
+        int posX = rand() % (SCREEN_WIDTH / CELL_SIZE) * CELL_SIZE;
+        int posY = rand() % (SCREEN_HEIGHT / CELL_SIZE) * CELL_SIZE;
+        Position pos = {posX, posY};
+        // 检查生成的障碍物是否与蛇重叠
+        if (std::find(snake.begin(), snake.end(), pos) != snake.end()) {
+            continue;// 如果重叠，重新生成
+        }
+        // 检查生成的障碍物是否与食物重叠
+        if (posX == food.x && posY == food.y) {
+            continue;// 如果重叠，重新生成
+        }
+        // 检查生成的障碍物是否与蛇头过于接近
+        if (abs(posX - snake[0].x) <= 10*CELL_SIZE && abs(posY - snake[0].y) <= 10*CELL_SIZE) {
+            continue;// 如果接近，重新生成
+        }
+        //将障碍物添加到障碍物列表中
+        barriers.push_back({rand() % (SCREEN_WIDTH / CELL_SIZE) * CELL_SIZE, rand() % (SCREEN_HEIGHT / CELL_SIZE) * CELL_SIZE});
+    }
+}
+
 bool SnakeGame::checkCollision() {
     const Position& head = snake[0];
 
     // 检查是否撞墙
     if (head.x < 0 || head.x >= SCREEN_WIDTH || head.y < 0 || head.y >= SCREEN_HEIGHT) {
+        std::cout<<"collision with wall";
         return true;
+    }
+
+    // 检查是否撞到障碍物
+    for (const Position& barrier : barriers) {
+        if (head.x == barrier.x && head.y == barrier.y) {
+            std::cout<<"collision with barrier";
+            return true;
+        }
     }
 
     // 检查是否撞到自己
     for (size_t i = 1; i < snake.size(); ++i) {
         if (head.x == snake[i].x && head.y == snake[i].y) {
+            std::cout<<"collision with self";
             return true;
         }
     }
