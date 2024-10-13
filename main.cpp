@@ -14,7 +14,7 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int CELL_SIZE = 20;
 const int BARRIERS_NUM = 10;
-
+int score = 0;
 
 // 枚举方向
 enum Direction { UP, DOWN, LEFT, RIGHT };
@@ -110,6 +110,34 @@ private:
     bool growSnake;
 };
 
+void renderScore(SDL_Renderer* renderer, TTF_Font* font, int score, int x, int y) {
+    // 创建分数字符串
+    std::string scoreText = "Score: " + std::to_string(score);
+
+    // 设置文本颜色 (白色)
+    SDL_Color color = {255, 255, 255};
+
+    // 渲染文本到表面
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, scoreText.c_str(), color);
+
+    // 将表面转换为纹理
+    SDL_Texture* messageTexture = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+    // 获取纹理的宽高
+    int textWidth = 0, textHeight = 0;
+    SDL_QueryTexture(messageTexture, NULL, NULL, &textWidth, &textHeight);
+
+    // 设置显示位置
+    SDL_Rect renderQuad = {x, y, textWidth, textHeight};
+
+    // 将纹理绘制到渲染器上
+    SDL_RenderCopy(renderer, messageTexture, NULL, &renderQuad);
+
+    // 清理资源
+    SDL_FreeSurface(surfaceMessage);
+    SDL_DestroyTexture(messageTexture);
+}
+
 SnakeGame::SnakeGame()
         : window(nullptr), renderer(nullptr), running(true), gameState(MENU), dir(RIGHT), growSnake(false),
         menu_backgroundTexture(nullptr), startButtonTexture(nullptr), menuButtonTexture(nullptr),
@@ -117,14 +145,14 @@ SnakeGame::SnakeGame()
         bgm(nullptr), additionTexture(nullptr), subtractionTexture(nullptr), backTexture(nullptr), setting_backgroundTexture(nullptr),
         game_backgroundTexture(nullptr), font(nullptr){
     // 初始化 SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-        running = false;
-        return;
-    }
-    // 初始化 SDL_image
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-        std::cerr << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+            std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+            running = false;
+            return;
+        }
+        // 初始化 SDL_image
+        if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+            std::cerr << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
         running = false;
         return;
     }
@@ -320,6 +348,7 @@ void SnakeGame::update() {
         // 检查是否吃到食物
         if (newHead.x == food.x && newHead.y == food.y) {
             growSnake = true;
+            score += 5;
             generateFood();
             generateBarriers();// 障碍物也进行更新
         }
@@ -474,6 +503,7 @@ void SnakeGame::renderGame() {
         SDL_RenderCopy(renderer, barrierTexture, nullptr, &barrierRect); 
     }
     // 显示更新
+    renderScore(renderer, font, score, 10, 10); // 分数显示在(10, 10)处
     SDL_RenderPresent(renderer);
 }
 

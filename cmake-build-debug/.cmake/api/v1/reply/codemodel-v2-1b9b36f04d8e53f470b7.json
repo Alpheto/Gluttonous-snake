@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/clion-codes/Gluttonous-snake/cmake-build-debug",
-		"source" : "D:/clion-codes/Gluttonous-snake"
+		"build" : "C:/Users/32181/Desktop/Gluttonous-snake/cmake-build-debug",
+		"source" : "C:/Users/32181/Desktop/Gluttonous-snake"
 	},
 	"version" : 
 	{
