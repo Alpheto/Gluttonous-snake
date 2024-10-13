@@ -115,7 +115,7 @@ void renderScore(SDL_Renderer* renderer, TTF_Font* font, int score, int x, int y
     std::string scoreText = "Score: " + std::to_string(score);
 
     // 设置文本颜色 (白色)
-    SDL_Color color = {255, 255, 255};
+    SDL_Color color = {0, 0, 0};
 
     // 渲染文本到表面
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, scoreText.c_str(), color);
