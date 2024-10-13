@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/32181/Desktop/Gluttonous-snake/main.cpp" "CMakeFiles/Snake.dir/main.cpp.obj" "gcc" "CMakeFiles/Snake.dir/main.cpp.obj.d"
+  "D:/clion-codes/Gluttonous-snake/main.cpp" "CMakeFiles/Snake.dir/main.cpp.obj" "gcc" "CMakeFiles/Snake.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
