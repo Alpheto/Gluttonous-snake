@@ -7,7 +7,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-#include <algorithm> // std::find
+#include <algorithm>
 #undef main // 这样就可以解决 undefwinmain 的问题
 // 游戏设置
 const int SCREEN_WIDTH = 640;
@@ -20,7 +20,7 @@ int score = 0;
 enum Direction { UP, DOWN, LEFT, RIGHT };
 
 // 枚举游戏的状态
-enum GameState { MENU, PLAYING, SETTING, GAME_OVER };
+enum GameState { MENU, PLAYING, SETTING, GAME_OVER};
 
 // 位置结构体
 struct Position {
@@ -76,13 +76,18 @@ private:
     SDL_Texture* subtractionTexture;
     SDL_Texture* backTexture;
     SDL_Texture* setting_backgroundTexture;
+    SDL_Texture* gameoverTexture;
     SDL_Texture* snakeHeadTexture;
     SDL_Texture* snakeBodyTexture;
     SDL_Texture* snakeTailTexture;
     SDL_Texture* foodTexture;
     SDL_Texture* barrierTexture;
 
-    Mix_Music* bgm;
+    Mix_Music* menubgm;
+    Mix_Music* bossbgm;
+    Mix_Music* endbgm;
+    Mix_Music* plotbgm;
+    Mix_Music* playingbgm;
     TTF_Font* font; // 字体
 
     void processInput();
@@ -142,7 +147,7 @@ SnakeGame::SnakeGame()
         : window(nullptr), renderer(nullptr), running(true), gameState(MENU), dir(RIGHT), growSnake(false),
         menu_backgroundTexture(nullptr), startButtonTexture(nullptr), menuButtonTexture(nullptr),
         snakeHeadTexture(nullptr), snakeBodyTexture(nullptr), snakeTailTexture(nullptr), foodTexture(nullptr),barrierTexture(nullptr),
-        bgm(nullptr), additionTexture(nullptr), subtractionTexture(nullptr), backTexture(nullptr), setting_backgroundTexture(nullptr),
+        menubgm(nullptr), bossbgm(nullptr), plotbgm(nullptr), playingbgm(nullptr), additionTexture(nullptr), subtractionTexture(nullptr), backTexture(nullptr), setting_backgroundTexture(nullptr),
         game_backgroundTexture(nullptr), font(nullptr){
     // 初始化 SDL
         if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -192,19 +197,24 @@ SnakeGame::SnakeGame()
     subtractionTexture = loadTexture("picture\\subtraction.png", renderer); // 减少音量按钮的图片
     backTexture = loadTexture("picture\\back.png", renderer);
     setting_backgroundTexture = loadTexture("picture\\settingbackground.jpg", renderer);
+    gameoverTexture = loadTexture("picture\\game_over.png", renderer);
     foodTexture = loadTexture("picture\\food.png", renderer);
     barrierTexture = loadTexture("picture\\barrier.png", renderer);
     snakeHeadTexture = loadTexture("picture\\Snakehead.png", renderer);
     snakeBodyTexture = loadTexture("picture\\Snakebody.png", renderer);
     snakeTailTexture = loadTexture("picture\\Snaketail.png", renderer);
-    bgm = Mix_LoadMUS("music\\MenuBGM.mp3");
-    if (bgm == nullptr) {
+    //加载音乐
+    menubgm = Mix_LoadMUS("music\\MenuBGM.mp3");
+    playingbgm = Mix_LoadMUS("music\\PlayingBGM.mp3");
+    bossbgm = Mix_LoadMUS("music\\BossBGM.mp3");
+    plotbgm = Mix_LoadMUS("music\\PlotBGM.mp3");
+    endbgm = Mix_LoadMUS("music\\EndBGM.mp3");
+
+    if (menubgm == nullptr) {
         std::cerr << "Failed to load BGM! SDL_mixer Error: " << Mix_GetError() << std::endl;
         running = false;
         return;
     }
-
-    Mix_PlayMusic(bgm, -1);  // 无限循环播放
 
     // 加载字体
     font = TTF_OpenFont("font\\English.ttf", 24); // 替换为你的字体文件路径
@@ -219,6 +229,9 @@ SnakeGame::SnakeGame()
         running = false;
         return;
     }
+
+    Mix_PlayMusic(menubgm, -1);
+
     // 初始化随机数种子
     srand(static_cast<unsigned int>(time(0)));
 
@@ -235,8 +248,12 @@ SnakeGame::SnakeGame()
 }
 
 SnakeGame::~SnakeGame() {
-    Mix_FreeMusic(bgm);
+    Mix_FreeMusic(menubgm);
+    Mix_FreeMusic(plotbgm);
+    Mix_FreeMusic(playingbgm);
+    Mix_FreeMusic(bossbgm);
     Mix_CloseAudio();
+
     TTF_CloseFont(font); // 关闭字体
 
     SDL_DestroyTexture(menu_backgroundTexture);
@@ -292,6 +309,8 @@ void SnakeGame::processInput() {
 
             if (isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 300, 100, 50)) {
                 resetGame();
+                Mix_HaltMusic();
+                Mix_PlayMusic(playingbgm, -1);
             }
             if (isButtonClicked(x, y, SCREEN_WIDTH / 2 - 50, 400, 100, 50)) {
                 gameState = SETTING;
@@ -357,6 +376,8 @@ void SnakeGame::update() {
         // 检查碰撞
         if (checkCollision()) {
             gameState = GAME_OVER;
+            Mix_HaltMusic();
+            Mix_PlayMusic(endbgm, -1);
             gameOverStartTime = SDL_GetTicks();
             return;
         }
@@ -371,6 +392,8 @@ void SnakeGame::update() {
     } else if(gameState == GAME_OVER) {
         if(SDL_GetTicks() - gameOverStartTime >= 5000) {
             gameState = MENU;
+            Mix_HaltMusic();
+            Mix_PlayMusic(menubgm, -1);
         }
     }
 }
@@ -405,6 +428,8 @@ void SnakeGame::renderMenu() {
 
     // 显示渲染的内容
     SDL_RenderPresent(renderer);
+
+
 }
 
 void SnakeGame:: renderSetting()
@@ -507,19 +532,15 @@ void SnakeGame::renderGame() {
     SDL_RenderPresent(renderer);
 }
 
-// 添加 renderGameOver 方法
 void SnakeGame::renderGameOver() {
+    // 清屏
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    SDL_Color textColor = {255, 0, 0}; // 红色
-    SDL_Texture* textTexture = drawText("DIE", font, textColor, renderer); // 渲染文本
-    if (textTexture) {
-        SDL_Rect textRect = {SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2 - 25, 100, 50}; // 设置文本位置和大小
-        SDL_RenderCopy(renderer, textTexture, nullptr, &textRect); // 绘制文本
-        SDL_DestroyTexture(textTexture); // 释放纹理
-    }
+    // 渲染背景
+    SDL_RenderCopy(renderer, gameoverTexture, nullptr, nullptr);  // 将整个窗口渲染为背景图片
 
+    // 显示渲染的内容
     SDL_RenderPresent(renderer);
 }
 
