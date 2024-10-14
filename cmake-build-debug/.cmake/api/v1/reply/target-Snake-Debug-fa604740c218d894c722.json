@@ -14,6 +14,7 @@
 		"commands" : 
 		[
 			"add_executable",
+			"link_directories",
 			"target_link_libraries",
 			"include_directories"
 		],
@@ -35,11 +36,17 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 19,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
+				"file" : 0,
+				"line" : 19,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
 				"file" : 0,
 				"line" : 9,
 				"parent" : 0
@@ -52,16 +59,13 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -fdiagnostics-color=always"
-				},
-				{
-					"fragment" : "-std=gnu++14"
+					"fragment" : "-g -std=gnu++14 -fdiagnostics-color=always"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "D:/SDLpaint/SDL2/mingw(CLion+VSC)/SDL2-2.26.0-allinone/x86_64-w64-mingw32/include"
 				}
 			],
@@ -95,16 +99,21 @@
 			},
 			{
 				"backtrace" : 2,
+				"fragment" : "-LD:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib",
+				"role" : "libraryPath"
+			},
+			{
+				"backtrace" : 3,
 				"fragment" : "D:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib\\libSDL2main.a",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "D:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib\\libSDL2.dll.a",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "D:\\SDLpaint\\SDL2\\mingw(CLion+VSC)\\SDL2-2.26.0-allinone\\x86_64-w64-mingw32\\lib\\libSDL2_image.dll.a",
 				"role" : "libraries"
 			},

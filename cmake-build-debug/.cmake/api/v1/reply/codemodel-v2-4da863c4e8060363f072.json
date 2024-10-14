@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Snake::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Snake-Debug-ddedfea80c13cd8e1c9d.json",
+					"jsonFile" : "target-Snake-Debug-fa604740c218d894c722.json",
 					"name" : "Snake",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake/cmake-build-debug",
-		"source" : "C:/Users/ds555/Desktop/ProgramDesigning/ProjectTeam/Gluttonous-snake"
+		"build" : "D:/clion-codes/Gluttonous-snake/cmake-build-debug",
+		"source" : "D:/clion-codes/Gluttonous-snake"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 6
 	}
 }
